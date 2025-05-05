@@ -22,12 +22,15 @@ let UserService = class UserService {
     constructor(repo) {
         this.repo = repo;
     }
-    create(user) {
+    async create(user) {
         const newUser = this.repo.create(user);
-        return this.repo.save(newUser);
+        return await this.repo.save(newUser);
     }
     findByEmail(email) {
         return this.repo.findOne({ where: { email } });
+    }
+    findByUsername(username) {
+        return this.repo.findOne({ where: { username } });
     }
 };
 exports.UserService = UserService;

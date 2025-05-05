@@ -10,12 +10,17 @@ export class UserService {
     private repo: Repository<User>,
   ) {}
 
-  create(user: Partial<User>) {
+  async create(user: Partial<User>) {
     const newUser = this.repo.create(user);
-    return this.repo.save(newUser);
+    return await this.repo.save(newUser);
   }
 
   findByEmail(email: string) {
     return this.repo.findOne({ where: { email } });
   }
+  
+  findByUsername(username: string) {
+    return this.repo.findOne({ where: { username } });
+  }
+
 }

@@ -21,18 +21,36 @@ let AuthService = class AuthService {
         this.userService = userService;
         this.jwtService = jwtService;
     }
-    async register(email, password) {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        return this.userService.create({ email, password: hashedPassword });
+    async register(data) {
+        const hashedPassword = await bcrypt.hash(data.password, 10);
+        const { password, ...rest } = data;
+        return this.userService.create({
+            ...rest,
+            password: hashedPassword,
+        });
     }
-    async login(email, password) {
-        const user = await this.userService.findByEmail(email);
-        if (!user || !(await bcrypt.compare(password, user.password))) {
-            throw new common_1.UnauthorizedException('Invalid credentials');
+    async login(identifiant, password) {
+        let user = await this.userService.findByEmail(identifiant);
+        if (!user) {
+            user = await this.userService.findByUsername(identifiant);
         }
-        const payload = { sub: user.id, email: user.email };
+        if (!user || !(await bcrypt.compare(password, user.password))) {
+            throw new common_1.UnauthorizedException('Identifiants invalides');
+        }
+        const payload = {
+            sub: user.id,
+            email: user.email,
+            username: user.username,
+        };
         return {
-            access_token: this.jwtService.sign(payload),
+            token: this.jwtService.sign(payload),
+            user: {
+                id: user.id,
+                nom: user.nom,
+                prenom: user.prenom,
+                email: user.email,
+                username: user.username,
+            },
         };
     }
 };

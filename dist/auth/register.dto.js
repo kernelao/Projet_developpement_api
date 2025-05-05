@@ -9,10 +9,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
-const typeorm_1 = require("typeorm");
-let User = class User {
-    id;
+exports.RegisterDto = void 0;
+const class_validator_1 = require("class-validator");
+class RegisterDto {
     username;
     nom;
     prenom;
@@ -20,41 +19,39 @@ let User = class User {
     password;
     telephone;
     entreprise;
-};
-exports.User = User;
+}
+exports.RegisterDto = RegisterDto;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
-], User.prototype, "id", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ unique: true }),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], User.prototype, "username", void 0);
+], RegisterDto.prototype, "username", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], User.prototype, "nom", void 0);
+], RegisterDto.prototype, "nom", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], User.prototype, "prenom", void 0);
+], RegisterDto.prototype, "prenom", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ unique: true }),
+    (0, class_validator_1.IsEmail)(),
     __metadata("design:type", String)
-], User.prototype, "email", void 0);
+], RegisterDto.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.MinLength)(6),
     __metadata("design:type", String)
-], User.prototype, "password", void 0);
+], RegisterDto.prototype, "password", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, class_validator_1.IsMobilePhone)('fr-CA'),
     __metadata("design:type", String)
-], User.prototype, "telephone", void 0);
+], RegisterDto.prototype, "telephone", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], User.prototype, "entreprise", void 0);
-exports.User = User = __decorate([
-    (0, typeorm_1.Entity)()
-], User);
-//# sourceMappingURL=user.entity.js.map
+], RegisterDto.prototype, "entreprise", void 0);
+//# sourceMappingURL=register.dto.js.map
