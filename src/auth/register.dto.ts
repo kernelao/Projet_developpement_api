@@ -10,6 +10,10 @@ import {
   export class RegisterDto {
     @IsNotEmpty()
     @IsString()
+    username: string;
+    
+    @IsNotEmpty()
+    @IsString()
     nom: string;
   
     @IsNotEmpty()

@@ -29,6 +29,9 @@ let UserService = class UserService {
     findByEmail(email) {
         return this.repo.findOne({ where: { email } });
     }
+    findByUsername(username) {
+        return this.repo.findOne({ where: { username } });
+    }
 };
 exports.UserService = UserService;
 exports.UserService = UserService = __decorate([
