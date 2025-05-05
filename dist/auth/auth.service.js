@@ -21,9 +21,13 @@ let AuthService = class AuthService {
         this.userService = userService;
         this.jwtService = jwtService;
     }
-    async register(email, password) {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        return this.userService.create({ email, password: hashedPassword });
+    async register(data) {
+        const hashedPassword = await bcrypt.hash(data.password, 10);
+        const { password, ...rest } = data;
+        return this.userService.create({
+            ...rest,
+            password: hashedPassword,
+        });
     }
     async login(email, password) {
         const user = await this.userService.findByEmail(email);
