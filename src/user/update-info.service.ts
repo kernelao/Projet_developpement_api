@@ -18,6 +18,7 @@ export class UpdateInfoService {
     user.prenom = dto.prenom;
     user.nom = dto.nom;
     user.email = dto.email;
+    user.username = dto.username; // ✅ ligne ajoutée
 
     await this.userRepository.save(user);
     return { message: 'Informations mises à jour.' };
