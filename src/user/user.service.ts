@@ -41,4 +41,14 @@ export class UserService {
 
     return this.repo.save(user);
   }
+
+  // ✅ méthode ajoutée pour trouver un utilisateur par token de vérification
+  findByVerificationToken(token: string) {
+    return this.repo.findOne({ where: { verificationToken: token } });
+  }
+
+  // ✅ méthode pour sauvegarder un utilisateur modifié (utile dans verifyEmail)
+  save(user: User) {
+    return this.repo.save(user);
+  }
 }

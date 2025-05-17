@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './register.dto';
 import { LoginDto } from './login.dto';
@@ -23,5 +23,16 @@ export class AuthController {
         email: user.email,
       },
     };
+  }
+
+  @Get('verify-email/:token')
+  verifyEmail(@Param('token') token: string) {
+    return this.authService.verifyEmail(token);
+  }
+
+  // ✅ Route pour renvoyer l'email de vérification
+  @Post('resend-verification')
+  resend(@Body('email') email: string) {
+    return this.authService.resendVerification(email);
   }
 }

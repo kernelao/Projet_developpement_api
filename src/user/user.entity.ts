@@ -23,6 +23,12 @@ export class User {
   @Column()
   telephone: string;
 
-  @Column({ nullable: true }) // entreprise est facultatif
+  @Column({ nullable: true })
   entreprise?: string;
+
+  @Column({ default: false }) // ✅ compte non vérifié par défaut
+  isVerified: boolean;
+
+  @Column({ type: 'varchar', nullable: true }) // ✅ token de vérification
+  verificationToken: string | null;
 }
