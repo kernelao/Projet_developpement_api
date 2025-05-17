@@ -6,7 +6,7 @@ import { CreateEstimationDto } from './dto/create-estimation.dto';
 export class EstimationService {
   constructor(private readonly mailerService: MailerService) {}
 
-  async sendEstimationEmail(data: CreateEstimationDto) {
+  async sendEstimationEmail(data: CreateEstimationDto, pdfPath: string) {
     return this.mailerService.sendMail({
       to: 'admin@ovrkode.com',
       from: 'admin@ovrkode.com',
@@ -21,6 +21,12 @@ export class EstimationService {
         <p><strong>Message :</strong></p>
         <p>${data.message.replace(/\n/g, '<br>')}</p>
       `,
+      attachments: [
+        {
+          filename: 'devis.pdf',
+          path: pdfPath,
+        },
+      ],
     });
   }
 }
