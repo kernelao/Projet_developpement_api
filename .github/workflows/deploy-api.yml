@@ -1,0 +1,45 @@
+name: Déploiement API Ovrkode
+
+on:
+  push:
+    branches:
+      - api-deploy
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔁 Cloner le repo
+        uses: actions/checkout@v3
+
+      - name: 🏗️ Installer les dépendances
+        run: |
+          npm install
+
+      - name: 🚀 Envoyer les fichiers API au VPS
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_KEY }}
+          port: 2025
+          source: "." # ou ./dist si tu build
+          target: "/home/ovrkode/projeta/api_temp"
+
+      - name: 🔧 Déployer sur le VPS (copie + restart)
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_KEY }}
+          port: 2025
+          script: |
+            sudo rm -rf /home/ovrkode/projeta/api_old
+            mv /home/ovrkode/projeta/api /home/ovrkode/projeta/api_old || true
+            mv /home/ovrkode/projeta/api_temp /home/ovrkode/projeta/api
+            cd /home/ovrkode/projeta/api
+            npm install
+            npm run build
+            pm2 restart all || docker restart nest_api
+            echo "✅ Déploiement API terminé"
